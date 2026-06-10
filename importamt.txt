@@ -1,0 +1,2 @@
+if you dont want to trigger CI use 
+git commit  -m " <your message> [skip ci] "
