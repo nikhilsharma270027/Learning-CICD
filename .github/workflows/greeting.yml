@@ -1,0 +1,14 @@
+# name
+# This is a GitHub Actions workflow file that defines a workflow named "Greeting Workflow". 
+name: Greeting Workflow
+# The workflow is triggered on the "push" event, which means it will run whenever there is a push to the repository. The workflow consists of a single job called "greet" that runs on the latest version of Ubuntu. The job has one step that uses the "actions/hello-world-javascript-action" action to print a greeting message.
+
+on: push # Trigger the workflow on push events
+jobs:
+    greet: # Define a job named "greet"
+        # Specify the operating system for the job
+        runs-on: ubuntu-latest
+        steps: # Define the steps for the job
+            - name: "Print Greeting" # Name of the step
+              run: echo "Hello, World!" # Command 
+                # to print the greeting message
