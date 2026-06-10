@@ -34,6 +34,7 @@ jobs:
             #   run: npm run test
 
     deploy: # Define a job named "greet"
+        needs: test # This job depends on the "test" job, meaning it will only run if the "test" job completes successfully.
         # Specify the operating system for the job
         runs-on: ubuntu-latest
         steps: # Define the steps for the job
