@@ -1,14 +1,6 @@
   # name
   # This is a GitHub Actions workflow file that defines a workflow named "Greeting Workflow". 
-  name: Deploy Dist
-  # The workflow is triggered on the "push" event, which means it will run whenever there is a push to the repository. The workflow consists of a single job called "greet" that runs on the latest version of Ubuntu. The job has one step that uses the "actions/hello-world-javascript-action" action to print a greeting message.
-
-  # Trigger the workflow on push events
-  # push is the event that triggers the workflow
-  # workflow_dispatch allows you to manually trigger the workflow from the GitHub Actions tab in the repository
-  # on: [push,  workflow_dispatch]
-
-  # oony push if specific branch is pushed
+  name: Deploy React to github pages
   on: 
     push:
       branches: 
@@ -18,28 +10,18 @@
         - '.github/workflows/*'
         - README.md
     workflow_dispatch: # This allows the workflow to be manually triggered from the GitHub Actions tab in the repository. 
-  #  
-  # alterbative suntax
-  # on: 
-  #   - push
-  #   - workflow_dispatch
+  
   jobs:
       test: # Define a job named "greet"
           # Specify the operating system for the job
           runs-on: ubuntu-latest
           steps: # Define the steps for the job
               - name: Get Code
-              #   run: |
-              #     echo "Cloning repo.."
-              #     echo "${{toJson(github)}}"
-              #     git clone https://github.com/${{github.repository}}.git
                 uses: actions/checkout@v4
               - name: Install Nodejs
                 uses: actions/setup-node@v4
                 with: 
                   node-version: '20'
-              # - name : print node version
-              #   run: node -v
               - name: Cache dependencies
                 uses: actions/cache@v4
                 with:
@@ -47,8 +29,6 @@
                   key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}    
               - name: Install dependencies
                 run: npm ci
-              # - name: Run Tests
-              #   run: npm run test
 
       build: 
           needs: test
@@ -71,9 +51,9 @@
               - name: Build Project
                 run: npm run build
               - name: Upload Artifact
-                uses: actions/upload-artifact@v4
+                uses: actions/upload-pages-artifact@v4
                 with: # Define the name and path of athe artifact to be uploaded
-                  name: dist-files # The name of the artifact that will be displayed in the GitHub Actions UI.
+                  name: github-pages # The name of the artifact that will be displayed in the GitHub Actions UI.
                   path: dist # The path to the files or directories that you want to include in the artifact. In this case, it is the "dist" directory, which typically contains the built files of a project.
 
       # wee the artifact that is is generated in the test  and use it in the deploy job
@@ -81,15 +61,28 @@
       deploy: # Define a job named "greet"
           needs: build # This job depends on the "test" job, meaning it will only run if the "test" job completes successfully.
           # Specify the operating system for the job
-          runs-on: ubuntu-latest
-          steps: # Define the steps for the job
-              - name: Download Dist Artifact
-                uses: actions/download-artifact@v4
-                with: # Define the name and path of the artifact to be uploaded
-                  name: dist-files # The name of the artifact that will be displayed in the GitHub Actions UI.
-                  path: dist # The path to the files or directories that you want to include in the artifact.
-              - name: Deploy 
-                run: echo "Deploying to server..."  
 
+
+          
+          # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+          permissions:
+            pages: write      # to deploy to Pages
+            id-token: write   # to verify the deployment originates from an appropriate source
+
+          # Deploy to the github-pages environment
+          environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+
+          # Specify runner + deployment step
+          runs-on: ubuntu-latest
+          steps:
+          - name: Deploy to GitHub Pages
+            id: deployment
+            uses: actions/deploy-pages@v4 # or specific "vX.X.X" version tag for this action
+            with:
+              # The path to the directory containing the static files to be deployed. 
+              # In this case, it is the "dist" directory, which typically contains the built files of a project.
+              token: ${{ secrets.GITHUB_TOKEN }}
               
       

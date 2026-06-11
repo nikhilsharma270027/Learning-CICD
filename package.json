@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://nikhilsharma270027.github.io/Learning-CICD",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

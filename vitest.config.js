@@ -8,4 +8,6 @@ export default defineConfig({
     globals: true,                 // optional: makes describe/test/expect global
     setupFiles: './src/test/setup.js', // optional: see step 2
   },
+  base: '/Learning-CICD/', // ✅ set base path for GitHub Pages
+  
 });
