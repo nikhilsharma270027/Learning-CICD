@@ -6,7 +6,19 @@ name: Deploy Dist
 # Trigger the workflow on push events
 # push is the event that triggers the workflow
 # workflow_dispatch allows you to manually trigger the workflow from the GitHub Actions tab in the repository
-on: [push,  workflow_dispatch] 
+# on: [push,  workflow_dispatch]
+
+# oony push if specific branch is pushed
+on: 
+  push:
+    branches: 
+      - main
+      - feature/**
+    paths-ignore:
+      - '.github/workflows/*'
+      - README.md
+  workflow_dispatch: # This allows the workflow to be manually triggered from the GitHub Actions tab in the repository. 
+#  
 # alterbative suntax
 # on: 
 #   - push
