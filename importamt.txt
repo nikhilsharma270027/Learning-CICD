@@ -1,2 +1,7 @@
 if you dont want to trigger CI use 
 git commit  -m " <your message> [skip ci] "
+
+
+what is artifact?
+An artifact is exactly a file (or folder) that gets generated during the workflow process 
+– like a compiled build folder, test report HTML, or log file – which GitHub Actions saves so you can download it later.
