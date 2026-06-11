@@ -83,7 +83,7 @@ jobs:
         # Specify the operating system for the job
         runs-on: ubuntu-latest
         steps: # Define the steps for the job
-            - name: Upload Artifact
+            - name: Download Dist Artifact
               uses: actions/download-artifact@v4
               with: # Define the name and path of the artifact to be uploaded
                 name: dist-files # The name of the artifact that will be displayed in the GitHub Actions UI.
